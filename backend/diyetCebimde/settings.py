@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os
+import os  # ADD THIS LINE - IT'S MISSING!
 import json
 from pathlib import Path
 
