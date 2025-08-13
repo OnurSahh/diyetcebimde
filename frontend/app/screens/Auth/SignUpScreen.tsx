@@ -1,0 +1,399 @@
+import React, { useState, useContext, useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  StatusBar,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ActivityIndicator,
+  Animated,
+  Dimensions,
+  SafeAreaView,
+} from 'react-native';
+import { AuthContext } from '../../context/AuthContext';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { AuthStackParamList } from '../../../types';
+import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
+
+type SignUpScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'SignUpAuth'>;
+
+const SignUpScreen: React.FC = () => {
+  const navigation = useNavigation<SignUpScreenNavigationProp>();
+  const { register } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isFocused, setIsFocused] = useState<string | null>(null);
+
+  // Animation values
+  const titleOpacity = useRef(new Animated.Value(0)).current;
+  const titleTranslateY = useRef(new Animated.Value(-50)).current;
+  const formOpacity = useRef(new Animated.Value(0)).current;
+  const formTranslateY = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    // Animate everything in parallel for faster display
+    Animated.parallel([
+      // Title animations
+      Animated.timing(titleOpacity, {
+        toValue: 1,
+        duration: 100, // Reduced from 200
+        useNativeDriver: true,
+      }),
+      Animated.spring(titleTranslateY, {
+        toValue: 0,
+        tension: 80, // Increased from 50
+        friction: 5, // Reduced from 7
+        useNativeDriver: true,
+      }),
+      
+      // Form animations
+      Animated.timing(formOpacity, {
+        toValue: 1,
+        duration: 100, // Reduced from 200
+        useNativeDriver: true,
+      }),
+      Animated.spring(formTranslateY, {
+        toValue: 0,
+        tension: 80, // Increased from 50
+        friction: 5, // Reduced from 7
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  const handleSignUp = async () => {
+    if (email.trim() === '' || password.trim() === '') {
+      Alert.alert('Hata', 'Lütfen email ve şifre girin.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage('Şifreler eşleşmiyor. Lütfen kontrol edin.');
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage('');
+
+    try {
+      // Using default names since we removed the name fields
+      await register(email, 'Kullanıcı', 'Kullanıcı', password);
+      // Navigation is handled by RootNavigator based on user state
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        const data = error.response.data;
+        if (data.email) {
+          setErrorMessage('Bu email adresi zaten kullanımda.');
+        } else if (data.password) {
+          setErrorMessage('Şifre çok zayıf. Daha güçlü bir şifre seçin.');
+        } else if (data.non_field_errors) {
+          setErrorMessage('Kayıt başarısız. Lütfen tekrar deneyin.');
+        } else {
+          setErrorMessage('Bir hata oluştu. Lütfen tekrar deneyin.');
+        }
+      } else {
+        setErrorMessage('Ağ hatası. Lütfen internet bağlantınızı kontrol edin.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFocus = (input: string) => {
+    setIsFocused(input);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(null);
+  };
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.content}>
+            {/* Animated Title */}
+            <Animated.View 
+              style={[
+                styles.titleContainer, 
+                { 
+                  opacity: titleOpacity,
+                  transform: [{ translateY: titleTranslateY }] 
+                }
+              ]}
+            >
+              <Text style={styles.titlePrimary}>Diyet Cebimde</Text>
+              <Text style={styles.titleSecondary}>Sağlıklı yaşamın cebinde</Text>
+            </Animated.View>
+
+            {/* Registration Form */}
+            <Animated.View 
+              style={[
+                styles.formContainer,
+                {
+                  opacity: formOpacity,
+                  transform: [{ translateY: formTranslateY }]
+                }
+              ]}
+            >
+              <Text style={styles.formTitle}>Kayıt Ol</Text>
+              
+              {errorMessage ? (
+                <View style={styles.errorContainer}>
+                  <Text style={styles.errorText}>{errorMessage}</Text>
+                </View>
+              ) : null}
+
+              <View style={[
+                styles.inputContainer,
+                isFocused === 'email' && styles.inputContainerFocused
+              ]}>
+                <TextInput
+                  placeholder="Email"
+                  placeholderTextColor="#999"
+                  style={styles.input}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  value={email}
+                  onChangeText={setEmail}
+                  onFocus={() => handleFocus('email')}
+                  onBlur={handleBlur}
+                />
+              </View>
+
+              <View style={[
+                styles.inputContainer,
+                isFocused === 'password' && styles.inputContainerFocused
+              ]}>
+                <TextInput
+                  placeholder="Şifre"
+                  placeholderTextColor="#999"
+                  style={styles.input}
+                  secureTextEntry
+                  value={password}
+                  onChangeText={setPassword}
+                  onFocus={() => handleFocus('password')}
+                  onBlur={handleBlur}
+                />
+              </View>
+
+              <View style={[
+                styles.inputContainer,
+                isFocused === 'confirmPassword' && styles.inputContainerFocused
+              ]}>
+                <TextInput
+                  placeholder="Şifre (Tekrar)"
+                  placeholderTextColor="#999"
+                  style={styles.input}
+                  secureTextEntry
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  onFocus={() => handleFocus('confirmPassword')}
+                  onBlur={handleBlur}
+                />
+              </View>
+
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleSignUp}
+                disabled={isLoading}
+                activeOpacity={0.8}
+              >
+                <LinearGradient
+                  colors={['#00734C', '#006039']}
+                  style={styles.gradient}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  {isLoading ? (
+                    <ActivityIndicator size="small" color="#FFFFFF" />
+                  ) : (
+                    <Text style={styles.buttonText}>Kayıt Ol</Text>
+                  )}
+                </LinearGradient>
+              </TouchableOpacity>
+
+              <View style={styles.divider}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>Ya da</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
+              <TouchableOpacity
+                style={styles.signInLink}
+                onPress={() => navigation.navigate('SignInAuth')}
+                disabled={isLoading}
+              >
+                <Text style={styles.signInLinkText}>
+                  Zaten hesabın var mı? <Text style={styles.signInLinkTextBold}>Giriş Yap</Text>
+                </Text>
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+};
+
+export default SignUpScreen;
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+  },
+  titleContainer: {
+    marginTop: height * 0.08,
+    alignItems: 'center',
+  },
+  titlePrimary: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#006039',
+    letterSpacing: 0.5,
+  },
+  titleSecondary: {
+    marginTop: 8,
+    fontSize: 16,
+    color: '#666',
+    fontWeight: '400',
+  },
+  formContainer: {
+    width: '100%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 40,
+    alignItems: 'center',
+  },
+  formTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 24,
+    alignSelf: 'flex-start',
+  },
+  errorContainer: {
+    width: '100%',
+    backgroundColor: '#FFF0F0',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: '#FF3B30',
+  },
+  errorText: {
+    color: '#FF3B30',
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  inputContainer: {
+    width: '100%',
+    height: 56,
+    borderWidth: 1.5,
+    borderColor: '#DDDDDD',
+    borderRadius: 12,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+    backgroundColor: '#FAFAFA',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 1,
+    elevation: 1,
+  },
+  inputContainerFocused: {
+    borderColor: '#006039',
+    backgroundColor: '#FFFFFF',
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  input: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '400',
+    width: '100%',
+    height: '100%',
+  },
+  button: {
+    width: '100%',
+    height: 56,
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginTop: 8,
+    marginBottom: 24,
+    shadowColor: '#006039',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  gradient: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  divider: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#DDDDDD',
+  },
+  dividerText: {
+    color: '#999',
+    paddingHorizontal: 16,
+    fontSize: 14,
+  },
+  signInLink: {
+    padding: 8,
+  },
+  signInLinkText: {
+    color: '#666',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  signInLinkTextBold: {
+    color: '#006039',
+    fontWeight: '600',
+  },
+});

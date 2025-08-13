@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "name": "Diyet_Cebimde",
+    "slug": "Diyet_Cebimde",
+    "entryPoint": "./app/index.tsx",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "Diyet_Cebimde",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.onursahh.Diyet_Cebimde"
+    },
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-secure-store",
+      "react-native-google-mobile-ads"
+    ],
+    "react-native-google-mobile-ads": {
+      "android_app_id": "ca-app-pub-3940256099942544~3347511713"
+    },
+    "experiments": {
+      "runtime": "classic"
+    },
+    "newArchEnabled": true,
+    "extra": {
+      "eas": {
+        "projectId": "3a97633e-c0c6-47d5-a605-d83f7adc8ec1"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+frontend/app/screens/Main/with slider mealchoosescreen.txt
+*.pyc
+backend/chatbot/__pycache__/urls.cpython-313.pyc
+backend/chatbot/__pycache__/urls.cpython-313.pyc
+backend/chatbot/__pycache__/views.cpython-313.pyc
+*.pyc
+*.pyc
+
+frontend/node_modules
+backend/chatbot/__pycache__/views.cpython-313.pyc
+**/node_modules/

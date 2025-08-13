@@ -1,0 +1,6 @@
+{
+    "hostname": "android-emulator",
+    "ipv4_address": "10.0.2.2",
+    "mode": "APK/Android Emulator Mode",
+    "apk_mode": 1
+}
