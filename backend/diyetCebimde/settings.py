@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os  # ADD THIS LINE - IT'S MISSING!
+import os
 import json
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -49,7 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add for static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,16 +80,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'diyetCebimde.wsgi.application'
 
-# Database - Use Railway PostgreSQL
+# Database - Use Railway PostgreSQL with DATABASE_URL
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('PGDATABASE'),
-        'USER': os.environ.get('PGUSER'),
-        'PASSWORD': os.environ.get('PGPASSWORD'),
-        'HOST': os.environ.get('PGHOST'),
-        'PORT': os.environ.get('PGPORT', '5432'),
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 # Password validation
@@ -125,6 +123,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Custom User Model
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
 # REST Framework configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -143,30 +144,18 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
 }
 
-# CORS settings - Update with your actual frontend domain
+# CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8081",
-    # Add your actual mobile app domain or use CORS_ALLOW_ALL_ORIGINS = True for development
 ]
 
 # For mobile development, you might want to allow all origins temporarily
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 # OpenAI API Key
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
-# Remove or comment out local IPv4 configuration
-# IPV4_JSON_PATH = 'ipv4_address.json'
-# try:
-#     with open(IPV4_JSON_PATH) as f:
-#         ipv4_data = json.load(f)
-#     IPV4_ADDRESS = ipv4_data.get('ipv4_address')
-# except FileNotFoundError:
-#     IPV4_ADDRESS = None
-
-# Cron jobs (if you're using them)
+# Cron jobs
 CRONJOBS = [
     # Add your cron jobs here if any
 ]
-
-AUTH_USER_MODEL = 'accounts.CustomUser'
