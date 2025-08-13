@@ -1,1 +1,1 @@
-web: python manage.py collectstatic --noinput && python manage.py makemigrations && python manage.py migrate && gunicorn diyetCebimde.wsgi:application --bind 0.0.0.0:$PORT
+web: python manage.py collectstatic --noinput && python manage.py makemigrations accounts && python manage.py makemigrations && python manage.py migrate accounts && python manage.py migrate && gunicorn diyetCebimde.wsgi:application --bind 0.0.0.0:$PORT
