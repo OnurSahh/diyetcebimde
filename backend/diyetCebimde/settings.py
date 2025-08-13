@@ -168,3 +168,5 @@ OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 CRONJOBS = [
     # Add your cron jobs here if any
 ]
+
+AUTH_USER_MODEL = 'accounts.CustomUser'

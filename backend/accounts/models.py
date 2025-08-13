@@ -1,6 +1,6 @@
 # accounts/models.py
 
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, AbstractUser
 from django.db import models
 
 class CustomUserManager(BaseUserManager):
@@ -25,7 +25,7 @@ class CustomUserManager(BaseUserManager):
 
     # You can remove create_superuser if you don't need it now
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractUser):
     email = models.EmailField(unique=True, max_length=255)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -39,3 +39,19 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    # Add these lines to fix the clash
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',  # Add this line
+        blank=True,
+        help_text='The groups this user belongs to.',
+        verbose_name='groups',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_set',  # Add this line
+        blank=True,
+        help_text='Specific permissions for this user.',
+        verbose_name='user permissions',
+    )
