@@ -86,7 +86,7 @@ const setupAxiosInterceptors = (logout: () => Promise<void>) => {
 
         // Make refresh token request
         const response = await axios.post(
-          `http://${ipv4Data.ipv4_address}:8000/api/token/refresh/`,
+          `https://${ipv4Data.ipv4_address}/api/token/refresh/`,
           { refresh: refreshToken }
         );
 

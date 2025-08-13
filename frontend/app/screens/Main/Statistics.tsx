@@ -164,7 +164,7 @@ const fetchDailyStats = useCallback(async (retryCount = 0) => {
       // For weekly plan mode, get the values from the meal plan
       try {
         const mealPlanResponse = await axios.get(
-          `http://${ipv4Data.ipv4_address}:8000/api/mealplan/get-meal-plan/`,
+          `https://${ipv4Data.ipv4_address}/api/mealplan/get-meal-plan/`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -185,7 +185,7 @@ const fetchDailyStats = useCallback(async (retryCount = 0) => {
           
           // Get stats for calories, protein, etc.
           const statsResponse = await axios.get(
-            `http://${ipv4Data.ipv4_address}:8000/api/tracker/statistics/daily/`,
+            `https://${ipv4Data.ipv4_address}/api/tracker/statistics/daily/`,
             {
               headers: { Authorization: `Bearer ${token}` }
             }
@@ -248,7 +248,7 @@ const fetchDailyStats = useCallback(async (retryCount = 0) => {
     
     // Get user goals from goals endpoint
     const goalsResponse = await axios.get(
-      `http://${ipv4Data.ipv4_address}:8000/api/tracker/goals/`,
+      `https://${ipv4Data.ipv4_address}/api/tracker/goals/`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -258,7 +258,7 @@ const fetchDailyStats = useCallback(async (retryCount = 0) => {
     
     // Get daily stats
     const statsResponse = await axios.get(
-      `http://${ipv4Data.ipv4_address}:8000/api/tracker/statistics/daily/manual/`,
+      `https://${ipv4Data.ipv4_address}/api/tracker/statistics/daily/manual/`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -460,8 +460,8 @@ const processTimeRangeData = (responseData: any, rangeType: 'weekly' | 'monthly'
       }
       
       const endpoint = planMode === 'weeklyPlan' 
-        ? `http://${ipv4Data.ipv4_address}:8000/api/tracker/statistics/weekly/`
-        : `http://${ipv4Data.ipv4_address}:8000/api/tracker/statistics/weekly/manual/`;
+        ? `https://${ipv4Data.ipv4_address}/api/tracker/statistics/weekly/`
+        : `https://${ipv4Data.ipv4_address}/api/tracker/statistics/weekly/manual/`;
       
       const response = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` }
@@ -489,8 +489,8 @@ const processTimeRangeData = (responseData: any, rangeType: 'weekly' | 'monthly'
       
       try {
         const endpoint = planMode === 'weeklyPlan' 
-          ? `http://${ipv4Data.ipv4_address}:8000/api/tracker/statistics/monthly/`
-          : `http://${ipv4Data.ipv4_address}:8000/api/tracker/statistics/monthly/manual/`;
+          ? `https://${ipv4Data.ipv4_address}/api/tracker/statistics/monthly/`
+          : `https://${ipv4Data.ipv4_address}/api/tracker/statistics/monthly/manual/`;
         
         const response = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${token}` }

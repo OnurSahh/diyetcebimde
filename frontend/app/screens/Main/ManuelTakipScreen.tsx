@@ -13,7 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import ipv4Data from '../../../assets/ipv4_address.json';
 
-const API_URL = `http://${ipv4Data.ipv4_address}:8000`;
+const API_URL = `https://${ipv4Data.ipv4_address}`;
 const { width } = Dimensions.get('window');
 
 // Type definitions

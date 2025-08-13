@@ -324,7 +324,7 @@ const ChatScreen: React.FC = () => {
     scrollToBottomIfNeeded();
 
     try {
-      const url = `http://${SERVER_IP}:8000/chatbot/send_message/`;
+      const url = `https://${ipv4Data.ipv4_address}/chatbot/send_message/`;
       // We'll just slice the last 10 messages
       const last10 = [...chatMessages, userMsg].slice(-10);
       const response = await axios.post(url, { messages: last10 });
@@ -495,7 +495,7 @@ const ChatScreen: React.FC = () => {
           formData.append('additional_input', additionalInput);
         }
 
-        const url = `http://${SERVER_IP}:8000/chatbot/send_photo/`;
+        const url = `https://${ipv4Data.ipv4_address}/chatbot/send_photo/`;
         const headers: any = { 'Content-Type': 'multipart/form-data' };
         if (token) {
           headers.Authorization = `Bearer ${token}`;

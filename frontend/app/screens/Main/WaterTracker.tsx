@@ -81,7 +81,7 @@ const WaterTracker: React.FC = () => {
       }
       
       const response = await axios.get(
-        `http://${ipv4Data.ipv4_address}:8000/api/tracker/statistics/daily/`,
+        `https://${ipv4Data.ipv4_address}/api/tracker/statistics/daily/`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -114,7 +114,7 @@ const WaterTracker: React.FC = () => {
       
       // Then sync with server
       await axios.post(
-        `http://${ipv4Data.ipv4_address}:8000/api/tracker/water/`,
+        `https://${ipv4Data.ipv4_address}/api/tracker/water/`,
         { amount: amount },
         {
           headers: { 

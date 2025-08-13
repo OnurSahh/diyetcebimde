@@ -22,7 +22,7 @@ import * as SecureStore from 'expo-secure-store';
 import ipv4Data from '../../../assets/ipv4_address.json';
 
 // Create a proper API URL from the imported JSON
-const API_URL = `http://${ipv4Data.ipv4_address}:8000`;
+const API_URL = `https://${ipv4Data.ipv4_address}`;
 
 type ProfileScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<HomeStackParamList, 'ProfileScreen'>,

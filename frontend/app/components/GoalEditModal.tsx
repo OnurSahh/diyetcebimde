@@ -47,7 +47,7 @@ const GoalEditModal: React.FC<GoalEditModalProps> = ({ visible, onClose, onSave 
       }
 
       const response = await axios.get(
-        `http://${ipv4Data.ipv4_address}:8000/api/tracker/goals/`,
+        `https://${ipv4Data.ipv4_address}/api/tracker/goals/`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -86,7 +86,7 @@ const GoalEditModal: React.FC<GoalEditModalProps> = ({ visible, onClose, onSave 
       const goalsToSave = useRecommended ? recommendedGoals : newGoals;
       
       await axios.post(
-        `http://${ipv4Data.ipv4_address}:8000/api/tracker/goals/update/`,
+        `https://${ipv4Data.ipv4_address}/api/tracker/goals/update/`,
         {
           ...goalsToSave,
           is_custom: !useRecommended

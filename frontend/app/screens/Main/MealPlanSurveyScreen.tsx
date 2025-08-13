@@ -355,7 +355,7 @@ const MealPlanSurveyScreen: React.FC = () => {
       if (!accessToken) {
         throw new Error('No access token found');
       }
-      const response = await fetch(`http://${ipv4Data.ipv4_address}:8000/api/survey/get-survey/`, {
+      const response = await fetch(`https://${ipv4Data.ipv4_address}/api/survey/get-survey/`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -526,7 +526,7 @@ const MealPlanSurveyScreen: React.FC = () => {
       }
       
       const response = await fetch(
-        `http://${ipv4Data.ipv4_address}:8000/api/mealplan/generate-meal-plan/`,
+        `https://${ipv4Data.ipv4_address}/api/mealplan/generate-meal-plan/`,
         {
           method: 'POST',
           headers: {
@@ -614,7 +614,7 @@ const handleSaveChanges = async () => {
     console.log("Sending data:", JSON.stringify(updatedData));
 
     const response = await fetch(
-      `http://${ipv4Data.ipv4_address}:8000/api/survey/update-survey/`,
+      `https://${ipv4Data.ipv4_address}/api/survey/update-survey/`,
       {
         method: 'PUT',
         headers: {

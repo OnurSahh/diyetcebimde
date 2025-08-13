@@ -159,7 +159,7 @@ export const FinalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
       try {
         response = await axios.post(
-          `http://${ipv4Data.ipv4_address}:8000/api/survey/submit-data/`,
+          `https://${ipv4Data.ipv4_address}/api/survey/submit-data/`,
           finalData,
           {
             headers: {
@@ -178,7 +178,7 @@ export const FinalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             console.log('Logging initial weight to weight tracker:', weightValue);
             
             await axios.post(
-              `http://${ipv4Data.ipv4_address}:8000/api/tracker/weight/`,
+              `https://${ipv4Data.ipv4_address}/api/tracker/weight/`,
               {
                 weight: weightValue,
                 date: today,
@@ -203,7 +203,7 @@ export const FinalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
           // Retry the request with the new access token
           response = await axios.post(
-            `http://${ipv4Data.ipv4_address}:8000/api/survey/submit-data/`,
+            `https://${ipv4Data.ipv4_address}/api/survey/submit-data/`,
             finalData,
             {
               headers: {
@@ -240,7 +240,7 @@ export const FinalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     try {
       const response = await axios.post(
-        `http://${ipv4Data.ipv4_address}:8000/api/token/refresh/`,
+        `https://${ipv4Data.ipv4_address}/api/token/refresh/`,
         { refresh: refreshToken },
         {
           headers: {

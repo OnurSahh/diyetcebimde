@@ -227,7 +227,7 @@ const MealChooseScreen: React.FC = () => {
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) return;
       const res = await fetch(
-        `http://${ipv4Data.ipv4_address}:8000/api/survey/get-survey/`,
+        `https://${ipv4Data.ipv4_address}/api/survey/get-survey/`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (!res.ok) return;
@@ -245,7 +245,7 @@ const MealChooseScreen: React.FC = () => {
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) throw new Error('No token');
       const res = await fetch(
-        `http://${ipv4Data.ipv4_address}:8000/api/mealplan/get-meal-plan/`,
+        `https://${ipv4Data.ipv4_address}/api/mealplan/get-meal-plan/`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.status === 404) {
@@ -304,7 +304,7 @@ const MealChooseScreen: React.FC = () => {
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) throw new Error('No token');
       const res = await fetch(
-        `http://${ipv4Data.ipv4_address}:8000/api/mealplan/generate-meal-plan/`,
+        `https://${ipv4Data.ipv4_address}/api/mealplan/generate-meal-plan/`,
         { method: 'POST', headers: { Authorization: `Bearer ${token}` } }
       );
       if (!res.ok) throw new Error('Plan generate error');
@@ -387,7 +387,7 @@ const MealChooseScreen: React.FC = () => {
     try {
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) throw new Error('Token not found');
-      await fetch(`http://${ipv4Data.ipv4_address}:8000/api/mealplan/mark-meal-consumed/`, {
+      await fetch(`https://${ipv4Data.ipv4_address}/api/mealplan/mark-meal-consumed/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ meal_id: meal.id, is_eaten: meal.consumed }),
@@ -416,7 +416,7 @@ const MealChooseScreen: React.FC = () => {
     try {
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) throw new Error('Token not found');
-      await fetch(`http://${ipv4Data.ipv4_address}:8000/api/mealplan/mark-food-consumed/`, {
+      await fetch(`https://${ipv4Data.ipv4_address}/api/mealplan/mark-food-consumed/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ food_id: food.id, is_eaten: food.consumed }),

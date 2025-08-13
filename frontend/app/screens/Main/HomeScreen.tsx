@@ -152,7 +152,7 @@ const HomeScreen: React.FC = () => {
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) return;
 
-      const response = await axios.get(`http://${ipv4Data.ipv4_address}:8000/api/mealgpt/manual-entries/`, {
+      const response = await axios.get(`https://${ipv4Data.ipv4_address}/api/mealgpt/manual-entries/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -179,7 +179,7 @@ const HomeScreen: React.FC = () => {
       }
 
       const response = await axios.get(
-        `http://${ipv4Data.ipv4_address}:8000/api/tracker/goals/`,
+        `https://${ipv4Data.ipv4_address}/api/tracker/goals/`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -233,7 +233,7 @@ const HomeScreen: React.FC = () => {
       setIsLoading(true);
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) throw new Error('No token');
-      const resp = await fetch(`http://${ipv4Data.ipv4_address}:8000/api/mealplan/get-meal-plan/`, {
+      const resp = await fetch(`https://${ipv4Data.ipv4_address}/api/mealplan/get-meal-plan/`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       });

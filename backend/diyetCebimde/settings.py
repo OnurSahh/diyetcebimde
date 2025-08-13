@@ -145,12 +145,15 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8081",
+    "https://diyetcebimde-production.up.railway.app",
 ]
 
-# For mobile development, you might want to allow all origins temporarily
-CORS_ALLOW_ALL_ORIGINS = True
+# CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    "https://diyetcebimde-production.up.railway.app",
+]
 
 # OpenAI API Key
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')

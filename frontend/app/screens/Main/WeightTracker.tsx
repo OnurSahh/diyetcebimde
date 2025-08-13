@@ -61,7 +61,7 @@ const fetchWeightHistory = useCallback(async () => {
     }
     
     const response = await axios.get(
-      `http://${ipv4Data.ipv4_address}:8000/api/tracker/weight/history/`,
+      `https://${ipv4Data.ipv4_address}/api/tracker/weight/history/`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -222,7 +222,7 @@ const handleWeightChange = (text: string) => {
       const roundedWeight = Math.round(weightValue * 100) / 100;
       
       await axios.post(
-        `http://${ipv4Data.ipv4_address}:8000/api/tracker/weight/`,
+        `https://${ipv4Data.ipv4_address}/api/tracker/weight/`,
         {
           weight: roundedWeight,
           date: today

@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           
           // Get user data
           const userResponse = await axios.get(
-            `http://${ipv4Data.ipv4_address}:8000/api/auth/user/`
+            `https://${ipv4Data.ipv4_address}/api/auth/user/`
           );
           
           const { email, first_name, last_name } = userResponse.data;
@@ -79,7 +79,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.log('Login attempt initiated');
       
       const response = await axios.post(
-        `http://${ipv4Data.ipv4_address}:8000/api/auth/login/`,
+        `https://${ipv4Data.ipv4_address}/api/auth/login/`,
         { email, password }
       );
 
@@ -117,7 +117,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     console.log('Registering user:', { email, first_name, last_name });
     try {
       const response = await axios.post(
-        `http://${ipv4Data.ipv4_address}:8000/api/auth/register/`,
+        `https://${ipv4Data.ipv4_address}/api/auth/register/`,
         {
           email,
           first_name,

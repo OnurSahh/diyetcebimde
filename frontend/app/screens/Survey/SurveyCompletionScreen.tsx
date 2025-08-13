@@ -57,7 +57,7 @@ const SurveyCompletionScreen: React.FC<Props> = ({ navigation }) => {
           // Try to update on server, but don't block completion if it fails
           try {
             await axios.post(
-              `http://${ipv4Data.ipv4_address}:8000/api/users/mark-survey-completed/`,
+              `https://${ipv4Data.ipv4_address}/api/users/mark-survey-completed/`,
               {},
               {
                 headers: {
@@ -81,8 +81,9 @@ const SurveyCompletionScreen: React.FC<Props> = ({ navigation }) => {
           { 
             text: "Tamam", 
             onPress: () => {
-              // Force app reload
-              DevSettings.reload();
+              // Instead of DevSettings.reload(), just navigate
+              // The RootNavigator will handle the navigation automatically
+              // since we updated the user state above
             } 
           }
         ]

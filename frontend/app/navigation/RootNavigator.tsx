@@ -24,7 +24,7 @@ const RootNavigator = () => {
           if (!accessToken) throw new Error('Access token bulunamadı.');
 
           const response = await axios.get(
-            `http://${ipv4Data.ipv4_address}:8000/api/survey/check-survey-status/`,
+            `https://${ipv4Data.ipv4_address}/api/survey/check-survey-status/`,
             {
               headers: {
                 Authorization: `Bearer ${accessToken}`,

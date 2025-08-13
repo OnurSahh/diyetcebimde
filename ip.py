@@ -31,7 +31,7 @@ def update_ip_files():
         # For development - use actual machine IP
         hostname = socket.gethostname()
         ipv4_address = socket.gethostbyname(hostname)
-        server_command = f"py manage.py runserver {ipv4_address}:8000"
+        server_command = f"py manage.py runserver {ipv4_address}"
         mode_description = "Development Mode"
         print(f"[DEV MODE] Using machine IP: {ipv4_address}")
     
@@ -83,9 +83,9 @@ def update_ip_files():
         print(f"- Database auto-configured via Railway")
     else:
         print(f"\n[DJANGO] Run your server with this command:")
-        print(f"py manage.py runserver {ipv4_address}:8000")
+        print(f"py manage.py runserver {ipv4_address}")
         print(f"\n[INFO] For development mode:")
-        print(f"- Frontend connects to {ipv4_address}:8000")
+        print(f"- Frontend connects to {ipv4_address}")
         print(f"- Use this for local development")
     
     print(f"\n[USAGE] To switch modes:")
