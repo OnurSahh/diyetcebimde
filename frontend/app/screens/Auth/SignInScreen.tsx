@@ -36,6 +36,9 @@ const SignInScreen: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isFocused, setIsFocused] = useState<string | null>(null);
 
+  // Debug: Get the backend URL being used
+  const backendUrl = `https://${ipv4Data.ipv4_address}`;
+
   // Animation values
   const titleOpacity = useRef(new Animated.Value(0)).current;
   const titleTranslateY = useRef(new Animated.Value(-50)).current;
@@ -74,6 +77,13 @@ const SignInScreen: React.FC = () => {
   }, []);
 
   const handleSignIn = async () => {
+    // Debug logging
+    console.log('=== SIGNIN DEBUG INFO ===');
+    console.log('Backend URL:', backendUrl);
+    console.log('Login URL:', `${backendUrl}/api/auth/login/`);
+    console.log('IP Config:', ipv4Data);
+    console.log('========================');
+
     // Validate inputs first
     if (!email.trim()) {
       setErrorMessage('Lütfen e-posta adresinizi girin.');
@@ -89,14 +99,25 @@ const SignInScreen: React.FC = () => {
       setIsLoading(true);
       setErrorMessage('');
       
+      console.log('About to call login with:', { email, password: '***' });
       await login(email, password);
+      console.log('Login call completed successfully');
       
       // Login successful - no error handling needed here as navigation 
       // will be handled by AuthContext
     } catch (error: any) {
+      console.log('=== LOGIN ERROR DEBUG ===');
+      console.log('Error type:', typeof error);
+      console.log('Error message:', error.message);
+      console.log('Error response:', error.response);
+      console.log('Error request:', error.request);
+      console.log('Full error object:', error);
+      console.log('========================');
+      
       // Handle different error types with specific messages
       if (error.response) {
         // The request was made and the server responded with an error status
+        console.log('Server responded with error status:', error.response.status);
         if (error.response.status === 401) {
           setErrorMessage('E-posta veya şifre hatalı. Lütfen tekrar deneyin.');
         } else if (error.response.status >= 500) {
@@ -106,9 +127,11 @@ const SignInScreen: React.FC = () => {
         }
       } else if (error.request) {
         // The request was made but no response was received
-        setErrorMessage('Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin.');
+        console.log('No response received from server');
+        setErrorMessage(`Sunucuya bağlanılamadı (${backendUrl}). Lütfen internet bağlantınızı kontrol edin.`);
       } else {
         // Something happened in setting up the request
+        console.log('Error setting up request');
         setErrorMessage('Giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.');
       }
     } finally {
@@ -280,6 +303,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     fontWeight: '400',
+  },
+  debugText: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#999',
+    fontFamily: 'monospace',
   },
   formContainer: {
     width: '100%',
