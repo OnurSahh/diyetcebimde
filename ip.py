@@ -4,45 +4,29 @@ import os
 import sys
 
 def update_ip_files():
-    # Check if Railway mode is enabled
-    railway_mode = 2  # Set to 2 for Railway deployment
-    apk_mode = 1      # Set to 1 for APK/Android emulator, 0 for development
+    # Railway URL - UPDATE THIS WITH YOUR RAILWAY URL
+    RAILWAY_URL = "diyetcebimde-production.up.railway.app"
     
     # Check command line arguments
+    railway_mode = 0  # Default to normal mode
+    
     if len(sys.argv) > 1:
         try:
             mode = int(sys.argv[1])
             if mode == 2:
                 railway_mode = 2
-                apk_mode = 0
-            elif mode == 1:
-                railway_mode = 0
-                apk_mode = 1
             else:
                 railway_mode = 0
-                apk_mode = 0
         except ValueError:
             print("[WARNING] Invalid mode argument. Using default (0)")
     
     if railway_mode == 2:
         # For Railway deployment
-        railway_url = input("Enter your Railway app URL (e.g., yourapp-production-xxxx.up.railway.app): ")
-        if not railway_url.startswith('http'):
-            railway_url = f"https://{railway_url}"
-        
-        ipv4_address = railway_url.replace('https://', '').replace('http://', '')
+        ipv4_address = RAILWAY_URL
         hostname = "railway-deployment"
-        server_command = "Railway handles server automatically"
         mode_description = "Railway Production Mode"
-        print(f"[RAILWAY MODE] Using Railway URL: {railway_url}")
+        print(f"[RAILWAY MODE] Using Railway URL: https://{RAILWAY_URL}")
         
-    elif apk_mode == 1:
-        # For Android emulator/APK - use special IP
-        ipv4_address = "10.0.2.2"
-        hostname = "android-emulator"
-        server_command = f"py manage.py runserver 0.0.0.0:8000"
-        mode_description = "APK/Android Emulator Mode"
-        print(f"[APK MODE] Using Android emulator IP: {ipv4_address}")
     else:
         # For development - use actual machine IP
         hostname = socket.gethostname()
@@ -56,7 +40,6 @@ def update_ip_files():
         "hostname": hostname, 
         "ipv4_address": ipv4_address,
         "mode": mode_description,
-        "apk_mode": apk_mode,
         "railway_mode": railway_mode
     }
     
@@ -94,27 +77,19 @@ def update_ip_files():
     
     # Print appropriate instructions
     if railway_mode == 2:
-        print(f"\n[RAILWAY] Your app will be deployed to:")
-        print(f"https://{ipv4_address}")
-        print(f"- Set environment variables in Railway dashboard")
-        print(f"- Database will be auto-configured")
-    elif apk_mode == 1:
-        print(f"\n[DJANGO] Run your server with this command:")
-        print(f"{server_command}")
-        print(f"\n[IMPORTANT] For APK mode:")
-        print(f"- Use 0.0.0.0:8000 to bind Django to all interfaces")
-        print(f"- Android emulator will connect via 10.0.2.2:8000")
-        print(f"- Make sure Windows Firewall allows port 8000")
+        print(f"\n[RAILWAY] Your app is deployed at:")
+        print(f"https://{RAILWAY_URL}")
+        print(f"- Backend URL configured for production")
+        print(f"- Database auto-configured via Railway")
     else:
         print(f"\n[DJANGO] Run your server with this command:")
-        print(f"{server_command}")
+        print(f"py manage.py runserver {ipv4_address}:8000")
         print(f"\n[INFO] For development mode:")
-        print(f"- Frontend connects directly to {ipv4_address}:8000")
-        print(f"- Use this for Expo Go on same network")
+        print(f"- Frontend connects to {ipv4_address}:8000")
+        print(f"- Use this for local development")
     
     print(f"\n[USAGE] To switch modes:")
     print(f"python ip.py 0  # Development mode (current machine IP)")
-    print(f"python ip.py 1  # APK mode (Android emulator IP)")
     print(f"python ip.py 2  # Railway mode (production deployment)")
     
     return ipv4_address, railway_mode

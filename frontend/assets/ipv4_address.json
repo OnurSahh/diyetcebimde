@@ -1,6 +1,6 @@
 {
-    "hostname": "android-emulator",
-    "ipv4_address": "10.0.2.2",
-    "mode": "APK/Android Emulator Mode",
-    "apk_mode": 1
+    "hostname": "railway-deployment",
+    "ipv4_address": "diyetcebimde-production.up.railway.app",
+    "mode": "Railway Production Mode",
+    "railway_mode": 2
 }
