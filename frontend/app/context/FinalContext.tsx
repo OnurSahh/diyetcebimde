@@ -87,6 +87,7 @@ export const FinalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         // User data
         first_name: userContext.firstName || "Kullanıcı",
         last_name: "Kullanıcı", // Use a default value
+        username: userContext.firstName || "Kullanıcı",
         birth_date: formatDate(userContext.birthDate),
         age: userContext.age,
         height_cm: userContext.height,
