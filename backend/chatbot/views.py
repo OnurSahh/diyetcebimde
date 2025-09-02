@@ -9,6 +9,7 @@ import cloudinary.uploader
 from PIL import Image
 import os
 import tempfile
+from django.conf import settings
 
 # Configure your Cloudinary account
 cloudinary.config(
@@ -166,6 +167,11 @@ def send_message(request):
         system_prompt = SYSTEM_PROMPT
 
     full_messages = [{"role": "system", "content": system_prompt}] + messages
+
+    # Add this at the beginning of your OpenAI call
+    api_key = settings.OPENAI_API_KEY
+    print(f"OpenAI API Key exists: {bool(api_key)}")
+    print(f"OpenAI API Key starts with sk-: {api_key.startswith('sk-') if api_key else False}")
 
     try:
         completion = client.chat.completions.create(
