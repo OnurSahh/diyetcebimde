@@ -141,6 +141,40 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const refreshToken = async () => {
+    try {
+      const refreshToken = await SecureStore.getItemAsync('refreshToken');
+      if (!refreshToken) {
+        throw new Error('No refresh token available');
+      }
+
+      const response = await fetch(`https://${ipv4Data.ipv4_address}/api/auth/token/refresh/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          refresh: refreshToken,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        await SecureStore.setItemAsync('accessToken', data.access);
+        if (data.refresh) {
+          await SecureStore.setItemAsync('refreshToken', data.refresh);
+        }
+        return data.access;
+      } else {
+        throw new Error('Token refresh failed');
+      }
+    } catch (error) {
+      // If refresh fails, logout user
+      await logout();
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}
