@@ -6,36 +6,28 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 ### RegisterSerializer (for Registration)
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        write_only=True,
-        required=True,
-        style={'input_type': 'password'},
-        min_length=8
-    )
-    password2 = serializers.CharField(
-        write_only=True,
-        required=True,
-        style={'input_type': 'password'},
-        min_length=8
-    )
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'first_name', 'last_name', 'password', 'password2']
-
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
-        return attrs
+        fields = ('email', 'password', 'first_name', 'last_name')
 
     def create(self, validated_data):
-        validated_data.pop('password2')
+        # Extract the data
+        email = validated_data.get('email')
+        password = validated_data.pop('password')
+        first_name = validated_data.get('first_name')
+        last_name = validated_data.get('last_name')
+        
+        # Create user with username set to email
         user = CustomUser.objects.create_user(
-            email=validated_data['email'],
-            password=validated_data['password'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            username=email  # ADD THIS LINE - set username to email
         )
+        
         return user
 
 ### CustomTokenObtainPairSerializer (for Login)
