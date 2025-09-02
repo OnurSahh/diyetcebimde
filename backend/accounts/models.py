@@ -40,6 +40,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+    
 
     # Add these lines to fix the clash
     groups = models.ManyToManyField(
