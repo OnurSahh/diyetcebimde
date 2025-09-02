@@ -26,6 +26,7 @@ class CustomUserManager(BaseUserManager):
     # You can remove create_superuser if you don't need it now
 
 class CustomUser(AbstractUser):
+    username = None  # Explicitly remove the username field
     email = models.EmailField(unique=True, max_length=255)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
