@@ -25,6 +25,7 @@ from .csv_manager import (
 # Import models for manual tracking
 from mealgpt.models import ManualTrackingDay, ManualTrackingEntry
 from django.utils import timezone
+from django.conf import settings
 
 # Configure Cloudinary
 cloudinary.config(
