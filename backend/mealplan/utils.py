@@ -641,6 +641,7 @@ def generate_and_optimize_mealplan_for_user(user, start_date=None):
     - AŞIRI ÖNEMLİ: AŞIRI ÖNEMLİ:AŞIRI ÖNEMLİ:AŞIRI ÖNEMLİ: Tam olarak 7 gün için plan oluştur. Tüm günleri tek bir yanıt içinde ver. Gün 1'den Gün 7'ye kadar her birini ayrı JSON bloğu olarak dahil et. Eksik gün olmamalı!!!!!!Eksik gün olmamalı!!!!!!Eksik gün olmamalı!!!!!!Eksik gün olmamalı!!!!!!Eksik gün olmamalı!!!!!!Eksik gün olmamalı!!!!!!
     """
 
+
     # GPT çağır
     reply = request_meal_plan_gpt(prompt)
     if not reply:
