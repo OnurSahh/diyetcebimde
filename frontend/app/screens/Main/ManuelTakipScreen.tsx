@@ -12,6 +12,7 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import ipv4Data from '../../../assets/ipv4_address.json';
+import { showInterstitialAd, shouldShowAd } from '../../utils/admobConfig';
 
 const API_URL = `https://${ipv4Data.ipv4_address}`;
 const { width } = Dimensions.get('window');
@@ -233,6 +234,13 @@ const ManuelTakipScreen: React.FC = () => {
     
     try {
       setIsUploading(true);
+      
+      // Show ad before uploading photo
+      if (shouldShowAd('photo')) {
+        showInterstitialAd();
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+      
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) throw new Error('No token');
       
@@ -636,6 +644,12 @@ const ManuelTakipScreen: React.FC = () => {
   const handleManualGptAdd = async () => {
     try {
       setIsGptLoading(true);
+      
+      // Show ad before GPT processing
+      if (shouldShowAd('gpt')) {
+        showInterstitialAd();
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
       
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) {

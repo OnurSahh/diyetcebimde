@@ -44,6 +44,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { ChatStackParamList, MainTabParamList } from '../../navigation/MainNavigator';
 import { AuthContext } from '../../context/AuthContext';
 import ipv4Data from '../../../assets/ipv4_address.json';
+import { showInterstitialAd, shouldShowAd } from '../../utils/admobConfig';
 
 const SERVER_IP = ipv4Data.ipv4_address;
 const CHAT_HISTORY_KEY = 'chatHistory';
@@ -96,6 +97,7 @@ const ChatScreen: React.FC = () => {
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [placeholders, setPlaceholders] = useState<string[]>([]);
+  const [messagesSent, setMessagesSent] = useState(0); // CHANGE #1: Track number of messages sent
 
   const textInputRef = useRef<TextInput>(null);
 
@@ -363,6 +365,16 @@ const ChatScreen: React.FC = () => {
       });
     }
     setIsTyping(false);
+
+    // Show ad logic
+    const newMessageCount = messagesSent + 1;
+    setMessagesSent(newMessageCount);
+    
+    if (shouldShowAd('chat')) {
+      setTimeout(() => {
+        showInterstitialAd();
+      }, 1000); // Show ad 1 second after message is sent
+    }
 
     // Keep keyboard open:
     textInputRef.current?.focus();

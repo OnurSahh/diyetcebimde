@@ -24,6 +24,7 @@ import ipv4Data from '../../../assets/ipv4_address.json';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { MainTabParamList } from '../../navigation/MainNavigator';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { showInterstitialAd, shouldShowAd } from '../../utils/admobConfig';
 
 // Types
 type SurveyData = {
@@ -520,10 +521,18 @@ const MealPlanSurveyScreen: React.FC = () => {
     try {
       setGeneratingMealPlan(true);
       
+      // Show ad before generating meal plan
+      if (shouldShowAd('mealplan')) {
+        showInterstitialAd();
+      }
+      
       const accessToken = await SecureStore.getItemAsync('accessToken');
       if (!accessToken) {
         throw new Error('No access token found');
       }
+      
+      // Add delay to let ad show
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       const response = await fetch(
         `https://${ipv4Data.ipv4_address}/api/mealplan/generate-meal-plan/`,

@@ -3,37 +3,45 @@
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
-    "name": "Diyet_Cebimde",
-    "slug": "Diyet_Cebimde",
+    "name": "DiyetCebimde",
+    "slug": "diyetcebimde",
     "entryPoint": "./app/index.tsx",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icon.png",
     "scheme": "Diyet_Cebimde",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.onursahh.Diyet_Cebimde"
+      "package": "com.onursahh.diyetcebimde",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font",
-      "expo-secure-store",
-      "react-native-google-mobile-ads"
+      [
+        "expo-ads-admob",
+        {
+          "androidAppId": "ca-app-pub-7309416658606873~6402339318",
+          "iosAppId": "ca-app-pub-7309416658606873~6402339318"
+        }
+      ]
     ],
     "react-native-google-mobile-ads": {
       "android_app_id": "ca-app-pub-3940256099942544~3347511713"

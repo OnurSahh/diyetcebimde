@@ -17,6 +17,8 @@ import { MedicineProvider } from '@context/MedicineContext';
 import { WaterProvider } from '@context/WaterContext';
 import { ReminderProvider } from '@context/ReminderContext';
 import setupAxiosInterceptors from './utils/axiosConfig';
+import { initializeAds } from './utils/admobConfig';
+import mobileAds from 'react-native-google-mobile-ads';
 
 // Wrapper component to access auth context
 const AppWithInterceptors = () => {
@@ -26,6 +28,16 @@ const AppWithInterceptors = () => {
     // Set up axios interceptors with auth logout function
     setupAxiosInterceptors(logout);
   }, [logout]);
+  
+  useEffect(() => {
+    // Initialize Mobile Ads SDK
+    mobileAds()
+      .initialize()
+      .then(adapterStatuses => {
+        console.log('AdMob initialized:', adapterStatuses);
+        initializeAds();
+      });
+  }, []);
   
   return (
     <UserProvider>

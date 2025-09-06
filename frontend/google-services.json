@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "268445302570",
+    "project_id": "diyet-cebimde-a700f",
+    "storage_bucket": "diyet-cebimde-a700f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268445302570:android:320519b59416bb8a486853",
+        "android_client_info": {
+          "package_name": "com.onursahh.diyetcebimde"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf2lrIbmWkqPoqCDhA0hF3i7zdmz2hue0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

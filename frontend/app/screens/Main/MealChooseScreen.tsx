@@ -21,6 +21,7 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import ipv4Data from '../../../assets/ipv4_address.json';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { getPlanMode, savePlanMode, PlanMode } from '../../utils/planModeStorage';
+import { showInterstitialAd, shouldShowAd } from '../../utils/admobConfig';
 
 type MealChooseScreenRouteProp = RouteProp<
   { params: { openCamera?: boolean } },
@@ -301,6 +302,13 @@ const MealChooseScreen: React.FC = () => {
   const handleGeneratePlan = async () => {
     try {
       setIsGenerating(true);
+      
+      // Show ad before regenerating plan
+      if (shouldShowAd('mealplan')) {
+        showInterstitialAd();
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+      
       const token = await SecureStore.getItemAsync('accessToken');
       if (!token) throw new Error('No token');
       const res = await fetch(
