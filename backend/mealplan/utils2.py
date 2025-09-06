@@ -16,13 +16,15 @@ from mealplan.linear_optimizer import solve_meal_plan_with_pulp
 from tracker.utils import update_daily_intake, sync_daily_intakes_for_user
 import pprint
 
+from django.conf import settings
+
 load_dotenv()
 
 ########################################
 # 0) GPT / OpenAI
 ########################################
 import openai
-client = openai.OpenAI(api_key='sk-proj-f8y-DS9CE_KuHK-C6_eGs9OOJIdct-_SfsIVq78eNcxefk-tfP0MQMyfzUd3-12ZBkNYMCayZtT3BlbkFJ_pMxmvPNYQF4XxpWhZWnyoca97ItDGv0kBP9ba317yj33Hms_jDRv4QEKo2K0agUQjwgHl7sUA-QYk53nPdzIA')
+client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 def request_meal_plan_gpt(prompt: str):

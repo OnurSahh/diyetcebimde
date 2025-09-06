@@ -8,9 +8,11 @@ from dotenv import load_dotenv
 from django.db.models import Max
 from mealplan.models import FoodItem
 
+from django.conf import settings
+
 load_dotenv()
 
-client = openai.OpenAI(api_key='sk-proj-f8y-DS9CE_KuHK-C6_eGs9OOJIdct-_SfsIVq78eNcxefk-tfP0MQMyfzUd3-12ZBkNYMCayZtT3BlbkFJ_pMxmvPNYQF4XxpWhZWnyoca97ItDGv0kBP9ba317yj33Hms_jDRv4QEKo2K0agUQjwgHl7sUA-QYk53nPdzIA')
+client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
 
 def load_yemekler():
     """
