@@ -10,7 +10,7 @@ from mealplan.models import FoodItem
 
 load_dotenv()
 
-client = openai.OpenAI(api_key='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')
+client = openai.OpenAI(api_key='sk-proj-f8y-DS9CE_KuHK-C6_eGs9OOJIdct-_SfsIVq78eNcxefk-tfP0MQMyfzUd3-12ZBkNYMCayZtT3BlbkFJ_pMxmvPNYQF4XxpWhZWnyoca97ItDGv0kBP9ba317yj33Hms_jDRv4QEKo2K0agUQjwgHl7sUA-QYk53nPdzIA')
 
 def load_yemekler():
     """
